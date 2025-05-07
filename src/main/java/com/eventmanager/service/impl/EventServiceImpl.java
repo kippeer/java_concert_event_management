@@ -5,6 +5,8 @@ import com.eventmanager.exception.BadRequestException;
 import com.eventmanager.exception.ResourceNotFoundException;
 import com.eventmanager.model.Artist;
 import com.eventmanager.model.Category;
+import com.eventmanager.dto.CategoryDTO;
+import com.eventmanager.dto.ArtistDTO;
 import com.eventmanager.model.Event;
 import com.eventmanager.model.Venue;
 import com.eventmanager.repository.ArtistRepository;
@@ -195,11 +197,12 @@ public class EventServiceImpl implements EventService {
         }
         
         // Convert the date range query to a paged result
-        return eventRepository.findAll(pageable)
+        return (Page<EventDTO>) eventRepository.findAll(pageable)
                 .map(this::convertToDto)
-                .filter(eventDTO -> 
-                    !eventDTO.getStartDateTime().isBefore(startDate) && 
-                    !eventDTO.getEndDateTime().isAfter(endDate));
+                .filter(eventDTO ->
+                        !eventDTO.getStartDateTime().isBefore(startDate) &&
+                                !eventDTO.getEndDateTime().isAfter(endDate));
+
     }
 
     @Override

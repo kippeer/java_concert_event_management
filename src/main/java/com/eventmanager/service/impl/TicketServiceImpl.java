@@ -138,7 +138,7 @@ public class TicketServiceImpl implements TicketService {
                 .orElseThrow(() -> new ResourceNotFoundException("Event", "id", eventId));
         
         // Filter tickets by event in memory since there's no direct repository method
-        return ticketRepository.findAll(pageable)
+        return (Page<TicketDTO>) ticketRepository.findAll(pageable)
                 .map(this::convertToDto)
                 .filter(ticketDTO -> ticketDTO.getEventId().equals(eventId));
     }
